@@ -21,7 +21,10 @@ const rest = new REST({ version: '9' }).setToken(token);
 		);
 
 		console.log('Successfully registered application commands.');
-	} catch (error) {
+	}
+	// eslint-disable-next-line indent
+ // eslint-disable-next-line indent
+ catch (error) {
 		console.error(error);
 	}
 })();
