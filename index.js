@@ -1,21 +1,25 @@
+
+//importing discord.js / config files / and the file system
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
+//discord requires you to check a box to let people know what the bot does.
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
+//showing the program where the commands folder is to find commands for the handler.
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
-
+//logs the readyness of the bot on startup
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
+//command handler / error thingy
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
@@ -25,7 +29,8 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		await command.execute(interaction);
-	} catch (error) {
+	}
+	catch (error) {
 		console.error(error);
 		return interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
