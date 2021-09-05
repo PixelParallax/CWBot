@@ -17,30 +17,25 @@ module.exports = {
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId('faq')
-					.setLabel('FAQ')
+					.setCustomId('questionsmain')
+					.setLabel('Questions?')
 					.setStyle('SECONDARY')
 					.setDisabled(false),
 				new MessageButton()
-					.setCustomId('ticket')
-					.setLabel('Create Ticket')
-					.setStyle('SUCCESS')
-					.setDisabled(true),
-				new MessageButton()
-					.setCustomId('report')
-					.setLabel('Report Person')
+					.setCustomId('reportmain')
+					.setLabel('Report')
 					.setStyle('PRIMARY')
-					.setDisabled(true),
-				new MessageButton()
-					.setCustomId('rqstaff')
-					.setLabel('Request Staff')
-					.setStyle('DANGER')
 					.setDisabled(false),
 				new MessageButton()
-					.setCustomId('complaint')
+					.setCustomId('supportmain')
+					.setLabel('Support')
+					.setStyle('SUCCESS')
+					.setDisabled(false),
+				new MessageButton()
+					.setCustomId('complaintmain')
 					.setLabel('Complaint')
 					.setStyle('DANGER')
-					.setDisabled(true),
+					.setDisabled(false),
 			);
 
 
