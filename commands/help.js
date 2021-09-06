@@ -43,6 +43,9 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Help Menu')
 			.setDescription('Please select what kind of help you need.')
+			.addFields (
+				{ name: 'Ticket Modules Disabled', value: 'Any feature that creates a ticket have been temporarily disabled.', inline: true},
+			)
 			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
 				
 			await interaction.reply({ ephemeral: true, embeds: [menuembed], components: [row] });

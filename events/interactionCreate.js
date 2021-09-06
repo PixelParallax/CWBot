@@ -2,6 +2,8 @@ const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, Client } = require('discord.js');
 const support = require('../commands/support');
 
+const { event, rgteamname, rgroster, rglogolink, rgemail, rgpayoutinfo, rgtwitter, rginsta, rgtwitch, rgnotes } = require('../commands/register')
+
 module.exports = {
 	name: 'interactionCreate',
 	execute(interaction) {
@@ -12,6 +14,9 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Help Menu')
 			.setDescription('Please select what kind of help you need.')
+			.addFields (
+				{ name: 'Ticket Modules Disabled', value: 'Any feature that creates a ticket have been temporarily disabled.', inline: true},
+			)
 			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
 
 		const helpbuttons = new MessageActionRow()
@@ -63,11 +68,12 @@ module.exports = {
 					.setCustomId('askbutton')
 					.setLabel('Ask a question')
 					.setStyle('PRIMARY')
-					.setDisabled(false),
+					.setDisabled(true),
 				new MessageButton()
 					.setCustomId('questionback')
 					.setLabel('Back')
 					.setStyle('DANGER')
+					
 					.setDisabled(false),
 			
 		);
@@ -106,36 +112,54 @@ module.exports = {
 
 		const reportembed = new MessageEmbed()
 			.setColor('#FF0000')
-			.setTitle('Report A Player')
-			.setDescription('Please select a category for the report.')
+			.setTitle('Report Menu')
+			.setDescription('Please choose a category for the report.')
 			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
-	
-		const reportbuttons = new MessageActionRow()
+		
+		const reportrow = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('playerreport')
+				.setLabel('In Game Player Report')
+				.setStyle('PRIMARY')
+				.setDisabled(true),
+			new MessageButton()
+				.setCustomId('discordreport')
+				.setLabel('Discord Member Report')
+				.setStyle('SUCCESS')
+				.setDisabled(true),
+			new MessageButton()
+				.setCustomId('reportback')
+				.setLabel('Back')
+				.setStyle('DANGER')
+				.setDisabled(false),
+		)
+		//--- Support Stuff---//
+
+		const supportembed = new MessageEmbed()
+			.setColor('#FF0000')
+			.setTitle('Support Menu')
+			.setDescription("If you need a staff's assistance please click request staff, otherwise you can create a ticket for your issue.")
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+		
+		const supportrow = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId('ingame')
-					.setLabel('In Game Player Report')
+					.setCustomId('createticket')
+					.setLabel('Create Ticket')
+					.setStyle('SUCCESS')
+					.setDisabled(true),
+				new MessageButton()
+					.setCustomId('rqstaffbutton')
+					.setLabel('Request Staff')
 					.setStyle('PRIMARY')
 					.setDisabled(false),
 				new MessageButton()
-					.setCustomId('discordreport')
-					.setLabel('Discord Member Report')
-					.setStyle('SUCCESS')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('reportbackbutton')
+					.setCustomId('supportback')
 					.setLabel('Back')
 					.setStyle('DANGER')
 					.setDisabled(false),
 			)
-
-
-
-
-
-
-		//---Request Staff Stuff---//
-
 
 		const rqstaffembed = new MessageEmbed()
 			.setColor('#FF0000')
@@ -182,10 +206,60 @@ module.exports = {
 
 		//---Complaint Stuff--//
 
-
-
-
+		const complaintembed = new MessageEmbed()
+			.setColor('#FF0000')
+			.setTitle('Complaint Menu')
+			.setDescription('Please choose which category your complaint falls into.')
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+				
+		const complaintrow = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('servercomplaint')
+					.setLabel('Server Complaint')
+					.setStyle('SECONDARY')
+					.setDisabled(true),
+				new MessageButton()
+					.setCustomId('websitecomplaint')
+					.setLabel('Website Complaint')
+					.setStyle('PRIMARY')
+					.setDisabled(true),
+				new MessageButton()
+					.setCustomId('othercomplaint')
+					.setLabel('Other Complaint')
+					.setStyle('SUCCESS')
+					.setDisabled(true),
+				new MessageButton()
+					.setCustomId('complaintback')
+					.setLabel('Back')
+					.setStyle('DANGER')
+					.setDisabled(false),
+		)
 		
+		//---Register Stuff---//
+		const regchannel = interaction.guild.channels.cache.get("833708080520626226")
+		const registerembed = new MessageEmbed()
+        .setColor('#FF0000')
+        .setTitle(`Team Registered for ${event}.`)
+        .addFields (
+            { name: 'Team Name:', value: `${rgteamname}`, inline: false},
+            { name: 'Team Roster:', value: `${rgroster}`, inline: false},
+            { name: 'Email:', value: `${rgemail}`, inline: true},
+            { name: 'Payout Info:', value: `${rgpayoutinfo}`, inline: true},
+            { name: 'Logo Link:', value: `${rglogolink}`, inline: false},
+        )
+        .addFields (
+            { name: 'Twitter:', value: `${rgtwitter}`, inline: true},
+            { name: 'Instagram:', value: `${rginsta}`, inline: true},
+            { name: 'Twitch:', value: `${rgtwitch}`, inline: true},
+            { name: 'Additional Notes:', value: `${rgnotes}`, inline: false},
+        )
+        .setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+
+		const registersuccess = new MessageEmbed()
+			.setColor('#4BFF00')
+        	.setTitle('Sucess! Your registration has been submitted.')
+			.setDescription('To remove it or edit it, please message a staff member.')
 
 		//---Buttons---//
 
@@ -203,18 +277,49 @@ module.exports = {
 				interaction.update({ ephemeral: true, embeds: [questionsembed], components: [questionsrow] });
 		////////////////////////////
 			else if(interaction.customId === `reportmain`)
-				interaction.update({ ephemeral: true, embeds: [reportembed], components: [reportbuttons] });
+				interaction.update({ ephemeral: true, embeds: [reportembed], components: [reportrow] });
 			else if(interaction.customId === `report`)
-				interaction.update({ ephemeral: true, emebds: [reportembed], components: [reportbuttons] });
-			else if(interaction.customId === `reportbackbutton`)
-				interaction.update({ ephemeral: true, emebds: [helpembed], components: [helpbuttons] });
-		////////////////////////////
-			else if(interaction.customId === `rqstaffmain`)
-				interaction.update({ ephemeral: true, embeds: [rqstaffembed], components: [rqstaffrow, rqstaffbackbutton] });
-			else if(interaction.customId === 'rqstaff')
-				interaction.update({ ephemeral: true, embeds: [rqstaffembed], components: [rqstaffrow, rqstaffbackbutton] })
-			else if(interaction.customId === `rqstaffback`)
+				interaction.update({ ephemeral: true, embeds: [reportembed], components: [reportrow] });
+			else if(interaction.customId === `reportback`)
 				interaction.update({ ephemeral: true, embeds: [helpembed], components: [helpbuttons] });
+		////////////////////////////
+			else if(interaction.customId === `supportmain`)
+				interaction.update({ ephemeral: true, embeds: [supportembed], components: [supportrow] });
+			else if(interaction.customId === `support`)
+				interaction.update({ ephemeral: true, embeds: [supportembed], components: [supportrow] });
+			else if(interaction.customId === `supportback`)
+				interaction.update({ ephemeral: true, embeds: [helpembed], components: [helpbuttons] });
+			else if(interaction.customId === `rqstaffbutton`)
+				interaction.update({ ephemeral: true, embeds: [rqstaffembed], components: [rqstaffrow, rqstaffbackbutton] });
+			else if(interaction.customId === `rqstaffback`)
+				interaction.update({ ephemeral: true, embeds: [supportembed], components: [supportrow] });
+		////////////////////////////
+			else if(interaction.customId === `complaintmain`)
+				interaction.update({ ephemeral: true, embeds: [complaintembed], components: [complaintrow] });
+			else if(interaction.customId === `complaint`)
+				interaction.update({ ephemeral: true, embeds: [complaintembed], components: [complaintrow] });
+			else if(interaction.customId === `complaintback`)
+				interaction.update({ ephemeral: true, embeds: [helpembed], components: [helpbuttons] });
+		////////////////////////////
+			else if(interaction.customId === `createticket`) {
+				let username = interaction.user.username
+				let channelname = `ticket-${username}`
+				const createdChannel = interaction.guild.channels.create(`${channelname}`, {
+					type: 'GUILD_TEXT',
+				  })
+				  async function declaredAsAsync() {
+					await createdChannel.send({content: 'Whatever'})
+				}
+				
+				interaction.update({ ephemeral: true, embeds: [helpembed], components: [helpbuttons] });
+			}
+		////////////////////////////
+			else if (interaction.customId === `submitreg`) {
+				console.log(rgteamname, rgpayoutinfo, rginsta)
+				regchannel.send({ embeds: [registerembed] })
+				interaction.update({ ephemeral: true, embeds: [registersuccess] });
+			}
+				
 		}
 
 
