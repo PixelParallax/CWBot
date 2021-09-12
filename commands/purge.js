@@ -1,11 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-
+const { Permissions } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('purge')
 		.setDescription('Prune up to 99 messages.')
 		.addIntegerOption(option => option.setName('amount').setDescription('Number of messages to prune')),
 	async execute(interaction) {
+		const member = interaction.member
 		if (interaction.commandName === 'purge') {
 			if (member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES, true)) {
 				const amount = interaction.options.getInteger('amount');
