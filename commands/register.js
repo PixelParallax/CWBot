@@ -1,21 +1,18 @@
 //importing needed features.
 const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 
 //command starts here
 module.exports = {
 //create slash command with basic info
 	data: new SlashCommandBuilder()
 		.setName('register')
-		.setDescription('Register for a tournament.')
+		.setDescription('STAFF ONLY: Tool to create Team Embeds.')
 		.addStringOption(option => 
 			option
 			.setName('event')
 			.setRequired(true)
-			.setDescription('Select which tourney you want to register.')
-			.addChoices([
-				['Splitgate 3v3 Tourney', 'Splitgate 3v3 Tourney']
-		    ])
+			.setDescription('Enter which tourney you want to register.')
         )
         .addStringOption(option => 
             option
@@ -37,18 +34,6 @@ module.exports = {
         )
         .addStringOption(option => 
             option
-            .setName('email')
-            .setRequired(true)
-            .setDescription("Enter your Email Address.")      
-        )
-        .addStringOption(option => 
-            option
-            .setName('payout-info')
-            .setRequired(true)
-            .setDescription("Enter your payout information.")      
-        )
-        .addStringOption(option => 
-            option
             .setName('twitter-link')
             .setRequired(true)
             .setDescription("Enter you or your teams twitter link.")      
@@ -64,13 +49,9 @@ module.exports = {
             .setName('twitch-link')
             .setRequired(true)
             .setDescription("Enter you or your teams twitch link.")      
-        )    
-        .addStringOption(option => 
-            option
-            .setName('notes')
-            .setRequired(true)
-            .setDescription("Please add any additional notes you have. If none write none.")      
         ),
+        
+
 		
 			
 //this is where the command is executed.
@@ -81,27 +62,12 @@ module.exports = {
     const rgteamname = interaction.options.getString('team-name');
     const rgroster = interaction.options.getString('team-roster');
     const rglogolink= interaction.options.getString('logo-link');
-    const rgemail = interaction.options.getString('email');
-    const rgpayoutinfo = interaction.options.getString('payout-info');
     const rgtwitter = interaction.options.getString('twitter-link');
     const rginsta = interaction.options.getString('insta-link');
     const rgtwitch = interaction.options.getString('twitch-link');
-    const rgnotes = interaction.options.getString('notes'); 
 
-    module.exports = { event, rgteamname, rgroster, rglogolink, rgemail, rgpayoutinfo, rgtwitter, rginsta, rgtwitch, rgnotes };
-
-const regrow = new MessageActionRow()
-.addComponents(
-    new MessageButton()
-        .setCustomId('submitreg')
-        .setLabel('Submit Registration')
-        .setStyle('SUCCESS')
-        .setDisabled(false),
-    )
-
- const reminder = new MessageEmbed()
-    .setColor('#6200FF')
-    .setTitle('If any of this info is incorrect please retype the command.')
+    const regchannel = interaction.guild.channels.cache.get("833708080520626226")
+    const member = interaction.member
 
  const registerembed = new MessageEmbed()
         .setColor('#FF0000')
@@ -109,19 +75,23 @@ const regrow = new MessageActionRow()
         .addFields (
             { name: 'Team Name:', value: `${rgteamname}`, inline: false},
             { name: 'Team Roster:', value: `${rgroster}`, inline: false},
-            { name: 'Email:', value: `${rgemail}`, inline: true},
-            { name: 'Payout Info:', value: `${rgpayoutinfo}`, inline: true},
-            { name: 'Logo Link:', value: `${rglogolink}`, inline: false},
         )
         .addFields (
             { name: 'Twitter:', value: `${rgtwitter}`, inline: true},
             { name: 'Instagram:', value: `${rginsta}`, inline: true},
             { name: 'Twitch:', value: `${rgtwitch}`, inline: true},
-            { name: 'Additional Notes:', value: `${rgnotes}`, inline: false},
         )
-        .setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
-        
-
-            await interaction.reply({ ephemeral: true, embeds: [registerembed, reminder], components: [regrow] });
-		}
-	};
+        .setThumbnail(`${rglogolink}`)
+        .setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
+       
+        if (interaction.commandName === 'register') {
+            if (member.permissions.has(Permissions.FLAGS.MANAGE_ROLES, true)) {
+                regchannel.send({ embeds: [registerembed] })
+                interaction.reply('**Success!**')
+            }
+            else if (member.permissions.has(Permissions.FLAGS.MANAGE_ROLES, false)) {
+                interaction.reply('**Manage Roles Permission Required.**');
+            } 
+        }
+	},
+};

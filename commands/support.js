@@ -27,7 +27,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setDescription('This is how you join a Tournament.')
 			.setTimestamp()
-			.setFooter('Clan Warz Info Bot', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info Bot', 'https://i.imgur.com/WPiL1Ye.png');
 
 //This is where the bot checks what question needs to be answered then sends the correct responce.
 		const string = interaction.options.getString('question');

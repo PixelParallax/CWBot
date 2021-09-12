@@ -2,8 +2,6 @@ const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, Client } = require('discord.js');
 const support = require('../commands/support');
 
-const { event, rgteamname, rgroster, rglogolink, rgemail, rgpayoutinfo, rgtwitter, rginsta, rgtwitch, rgnotes } = require('../commands/register')
-
 module.exports = {
 	name: 'interactionCreate',
 	execute(interaction) {
@@ -17,7 +15,7 @@ module.exports = {
 			.addFields (
 				{ name: 'Ticket Modules Disabled', value: 'Any feature that creates a ticket have been temporarily disabled.', inline: true},
 			)
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 
 		const helpbuttons = new MessageActionRow()
 				.addComponents(
@@ -55,7 +53,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Questions Menu')
 			.setDescription("Please visit our FAQ First by clicking the button, if your question isnt there you can click the Ask button.")
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 		
 		const questionsrow = new MessageActionRow()
 			.addComponents(
@@ -82,14 +80,14 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('FAQ')
 			.setDescription("You can visit the FAQ by going to the <#833709887975587860> channel or by visiting our website's Faq below.")
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 
 		const faqbuttonrow = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setLabel('Website FAQ')
 					.setStyle('LINK')
-					.setURL('https://clanwarz.gg/faqs')
+					.setURL('https://clanwarz.gg/faq')
 					.setDisabled(false),
 				new MessageButton()
 					.setCustomId('faqback')
@@ -114,7 +112,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Report Menu')
 			.setDescription('Please choose a category for the report.')
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 		
 		const reportrow = new MessageActionRow()
 		.addComponents(
@@ -140,7 +138,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Support Menu')
 			.setDescription("If you need a staff's assistance please click request staff, otherwise you can create a ticket for your issue.")
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 		
 		const supportrow = new MessageActionRow()
 			.addComponents(
@@ -165,7 +163,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Request Staff')
 			.setDescription('Select which staff is required to assist you.\nPlease be mindful of the staff in this selection.')
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 
 
 			const rqstaffrow = new MessageActionRow()
@@ -210,7 +208,7 @@ module.exports = {
 			.setColor('#FF0000')
 			.setTitle('Complaint Menu')
 			.setDescription('Please choose which category your complaint falls into.')
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 				
 		const complaintrow = new MessageActionRow()
 			.addComponents(
@@ -237,29 +235,7 @@ module.exports = {
 		)
 		
 		//---Register Stuff---//
-		const regchannel = interaction.guild.channels.cache.get("833708080520626226")
-		const registerembed = new MessageEmbed()
-        .setColor('#FF0000')
-        .setTitle(`Team Registered for ${event}.`)
-        .addFields (
-            { name: 'Team Name:', value: `${rgteamname}`, inline: false},
-            { name: 'Team Roster:', value: `${rgroster}`, inline: false},
-            { name: 'Email:', value: `${rgemail}`, inline: true},
-            { name: 'Payout Info:', value: `${rgpayoutinfo}`, inline: true},
-            { name: 'Logo Link:', value: `${rglogolink}`, inline: false},
-        )
-        .addFields (
-            { name: 'Twitter:', value: `${rgtwitter}`, inline: true},
-            { name: 'Instagram:', value: `${rginsta}`, inline: true},
-            { name: 'Twitch:', value: `${rgtwitch}`, inline: true},
-            { name: 'Additional Notes:', value: `${rgnotes}`, inline: false},
-        )
-        .setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
 
-		const registersuccess = new MessageEmbed()
-			.setColor('#4BFF00')
-        	.setTitle('Sucess! Your registration has been submitted.')
-			.setDescription('To remove it or edit it, please message a staff member.')
 
 		//---Buttons---//
 
@@ -314,13 +290,7 @@ module.exports = {
 				interaction.update({ ephemeral: true, embeds: [helpembed], components: [helpbuttons] });
 			}
 		////////////////////////////
-			else if (interaction.customId === `submitreg`) {
-				console.log(rgteamname, rgpayoutinfo, rginsta)
-				regchannel.send({ embeds: [registerembed] })
-				interaction.update({ ephemeral: true, embeds: [registersuccess] });
-			}
-				
-		}
+
 
 
 
@@ -371,6 +341,6 @@ module.exports = {
 			interaction.reply({allowedMentions: {roles: [adminid]}, content: `<@&${adminid}>`, embeds:[rqadminembed]});
 				
 		}
+	}
 	},
 };
-

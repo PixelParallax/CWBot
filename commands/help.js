@@ -46,7 +46,7 @@ module.exports = {
 			.addFields (
 				{ name: 'Ticket Modules Disabled', value: 'Any feature that creates a ticket have been temporarily disabled.', inline: true},
 			)
-			.setFooter('Clan Warz Info', 'https://i.imgur.com/AfFp7pu.png');
+			.setFooter('Clan Warz Info', 'https://i.imgur.com/WPiL1Ye.png');
 				
 			await interaction.reply({ ephemeral: true, embeds: [menuembed], components: [row] });
 		}
