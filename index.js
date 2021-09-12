@@ -25,7 +25,7 @@ for (const file of eventFiles) {
 	}
 }
 
-
+client.user.setActivity('Clan Warz', { type: 'WATCHING' });
 //command handler / error thingy
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
